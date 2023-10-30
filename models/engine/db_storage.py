@@ -62,20 +62,6 @@ class DBStorage:
         if obj is not None:
             self.__session.delete(obj)
 
-    def get(self, cls, id):
-        """Gets the attribute associated with the given attribute"""
-        if cls is not None:
-            return self.__session.query(cls).filter_by(id=id).first()
-        return None
-
-    def count(self, cls=None):
-        """Counts the number of items in the session"""
-        total = 0
-        for clss in classes:
-            if cls is None or cls is classes[clss] or cls is clss:
-                total += self.__session.query(classes[clss]).total()
-        return total
-
     def reload(self):
         """reloads data from the database"""
         Base.metadata.create_all(self.__engine)
@@ -86,3 +72,19 @@ class DBStorage:
     def close(self):
         """call remove() method on the private session attribute"""
         self.__session.remove()
+
+    def get(self, cls, id):
+        """Gets the attribute associated with the given attribute"""
+        data = self.all(cls)
+        for obj in data.values():
+            if id == str(obj.id):
+                return obj
+        return None
+
+    def count(self, cls=None):
+        """Counts the number of items in the session"""
+        total = 0
+        for clss in classes:
+            if cls is None or cls is classes[clss] or cls is clss:
+                total += self.__session.query(classes[clss]).total()
+        return total
