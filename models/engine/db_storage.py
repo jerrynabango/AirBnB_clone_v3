@@ -3,16 +3,14 @@
 Contains the class DBStorage
 """
 
-import models
 from models.amenity import Amenity
-from models.base_model import BaseModel, Base
+from models.base_model import Base
 from models.city import City
 from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
 from os import getenv
-import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
@@ -64,17 +62,6 @@ class DBStorage:
         if obj is not None:
             self.__session.delete(obj)
 
-    def get(self, cls, id):
-        """Gets the current session object by given id"""
-        if cls is not None:
-            return self.__session.query(cls).filter_by(id=id).first()
-        return None
-
-    def count(self, cls=None):
-        """Counts the number of items in the session for the given session"""
-        return len(self.all(cls))
-
-
     def reload(self):
         """reloads data from the database"""
         Base.metadata.create_all(self.__engine)
@@ -85,3 +72,17 @@ class DBStorage:
     def close(self):
         """call remove() method on the private session attribute"""
         self.__session.remove()
+
+    def get(self, cls, id):
+        """a method to retrieve one object"""
+        if cls is not None:
+            return self.__session.query(cls).filter_by(id=id).first()
+        return None
+
+    def count(self, cls=None):
+        """method to count the number of objects in storage"""
+        count = 0
+        for clss in classes:
+            if cls is None or cls is classes[clss] or cls is clss:
+                count += self.__session.query(classes[clss]).count()
+        return count
