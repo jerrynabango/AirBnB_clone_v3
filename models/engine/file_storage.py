@@ -48,6 +48,24 @@ class FileStorage:
         with open(self.__file_path, 'w') as f:
             json.dump(json_objects, f)
 
+    def get(self, cls, id):
+        """Gets a specific object from the database"""
+        if cls is not None:
+            key = "{}.{}".format(cls.__name__, id)
+            return self.all(cls).get(key, None)
+        return None
+
+    def total(self, cls=None):
+        """Counts the number of items in the collection by key."""
+        total = 0
+        if cls is None:
+            for key, value in self.all().items():
+                total += 1
+        else:
+            for key, value in self.all(cls).items():
+                total += 1
+        return total
+
     def reload(self):
         """deserializes the JSON file to __objects"""
         try:
