@@ -16,7 +16,7 @@ app.register_blueprint(app_views)
 
 
 @app.teardown_appcontext
-def teardown():
+def teardown(e=None):
     """Clean up the application context and exit."""
     models.storage.close()
 
@@ -24,10 +24,9 @@ def teardown():
 @app.errorhandler(404)
 def error(e):
     """Checks if the request is not found and returns a 404 error"""
-    error = str(e).split()[0]
-    output = e.description if "Not found" in e.description else "Not found"
-    return jsonify({"error": output}), error
-
+    status_code = str(e).split()[0]
+    message = e.description if "Not found" in e.description else "Not found"
+    return jsonify({"error": message}), status_code
 
 if __name__ == "__main__":
     app.run(getenv("HBNB_API_HOST"), getenv("HBNB_API_PORT"))
