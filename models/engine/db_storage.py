@@ -57,6 +57,20 @@ class DBStorage:
         """commit all changes of the current database session"""
         self.__session.commit()
 
+    def get(self, cls, id):
+        """Gets the attribute associated with the given id"""
+        if cls is not None:
+            return self.__session.query(cls).filter_by(id=id).first()
+        return None
+
+    def count(self, cls=None):
+        """Counts the number of items in the session for the given session"""
+        count = 0
+        for clss in classes:
+            if cls is None or cls is classes[clss] or cls is clss:
+                count += self.__session.query(classes[clss]).count()
+        return count
+
     def delete(self, obj=None):
         """delete from the current database session obj if not None"""
         if obj is not None:
@@ -73,16 +87,3 @@ class DBStorage:
         """call remove() method on the private session attribute"""
         self.__session.remove()
 
-    def get(self, cls, id):
-        """Gets the attribute associated with the given id"""
-        if cls is not None:
-            return self.__session.query(cls).filter_by(id=id).first()
-        return None
-
-    def count(self, cls=None):
-        """Counts the number of items in the session for the given session"""
-        count = 0
-        for clss in classes:
-            if cls is None or cls is classes[clss] or cls is clss:
-                count += self.__session.query(classes[clss]).count()
-        return count
