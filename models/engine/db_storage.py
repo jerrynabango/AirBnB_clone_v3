@@ -83,8 +83,4 @@ class DBStorage:
 
     def count(self, cls=None):
         """Counts the number of items in the session"""
-        total = 0
-        for clss in classes:
-            if cls is None or cls is classes[clss] or cls is clss:
-                total += self.__session.query(classes[clss]).total()
-        return total
+        return len(self.all(cls))
