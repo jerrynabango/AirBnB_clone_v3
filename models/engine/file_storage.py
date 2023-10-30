@@ -83,9 +83,9 @@ class FileStorage:
         """
         total = 0
         if cls is None:
-            for k, v in self.all().items():
+            for key, value in self.all().items():
                 total += 1
         else:
-            for k, v in self.all(cls).items():
+            for key, value in self.all(cls).items():
                 total += 1
         return total
