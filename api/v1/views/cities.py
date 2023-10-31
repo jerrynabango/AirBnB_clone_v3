@@ -19,7 +19,8 @@ def post_state(state_id):
     else:
         data = request.get_json(silent=True)
         if request.is_json and data is not None:
-            load = {key: str(value) for key, value in data.items() if key in pl}
+            load = {key: str(value) for key, value in data.items()
+                    if key in pl}
             if not load.get("name", None):
                 abort(400, description="Missing name")
             load.update({"state_id": str(state_id)})
@@ -44,7 +45,8 @@ def delete_city(city_id):
     else:
         data = request.get_json(silent=True)
         if request.is_json and data:
-            [setattr(deleted_city, key, str(value)) for key, value in data.items() if key in pl]
+            [setattr(deleted_city, key, str(value))
+             for key, value in data.items() if key in pl]
             deleted_city.save()
             return jsonify(deleted_city.to_dict()), 200
         abort(400, description="Not a JSON")

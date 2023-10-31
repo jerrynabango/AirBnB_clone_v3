@@ -12,11 +12,13 @@ pl = ("name",)
 def post_amenity():
     """Adds aamenity to the list of available agents"""
     if request.method == "GET":
-        return jsonify([amenity.to_dict() for amenity in storage.all(Amenity).values()])
+        return jsonify([amenity.to_dict()
+                        for amenity in storage.all(Amenity).values()])
     else:
         data = request.get_json(silent=True)
         if request.is_json and data is not None:
-            load = {key: str(value) for key, value in data.items() if key in pl}
+            load = {key: str(value) for key, value in data.items()
+                    if key in pl}
             if not load.get("name", None):
                 abort(400, description="Missing name")
             list = Amenity(**load)
@@ -40,7 +42,8 @@ def delete_amenity(amenity_id):
     else:
         data = request.get_json(silent=True)
         if request.is_json and data is not None:
-            [setattr(deleted_amenity, key, str(value)) for key, value in data.items()
+            [setattr(deleted_amenity, key, str(value))
+             for key, value in data.items()
              if key in pl]
             deleted_amenity.save()
             return jsonify(deleted_amenity.to_dict()), 200

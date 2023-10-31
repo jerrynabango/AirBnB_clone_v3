@@ -11,11 +11,13 @@ pl = ("name",)
 def post_states():
     """Adds a new state to the list of states available on the server."""
     if request.method == "GET":
-        return jsonify([list.to_dict() for list in storage.all(State).values()])
+        return jsonify([list.to_dict()
+                        for list in storage.all(State).values()])
     else:
         data = request.get_json(silent=True)
         if request.is_json and data is not None:
-            load = {key: str(value) for key, value in data.items() if key in pl}
+            load = {key: str(value) for key, value in data.items()
+                    if key in pl}
             if not load.get("name", None):
                 abort(400, description="Missing name")
             added_state = State(**load)
@@ -39,7 +41,8 @@ def delete_state(state_id):
     else:
         data = request.get_json(silent=True)
         if request.is_json and data:
-            [setattr(info, key, str(value)) for key, value in data.items() if key in pl]
+            [setattr(info, key, str(value)) for key, value in data.items()
+             if key in pl]
             info.save()
             return jsonify(info.to_dict()), 200
         abort(400, description="Not a JSON")

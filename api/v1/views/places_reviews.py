@@ -19,7 +19,8 @@ def post_placeid(place_id):
     else:
         data = request.get_json(silent=True)
         if request.is_json and data is not None:
-            load = {key: str(value) for key, value in data.items() if key in pl}
+            load = {key: str(value) for key, value in data.items()
+                    if key in pl}
             for key in pl:
                 if not load.get(key, None):
                     abort(400, description="Missing " + key)
