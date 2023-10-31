@@ -52,8 +52,8 @@ def one_user(user_id):
                     if key in pl[1:]}
             if load.get("password", None):
                 loading = load.get("password")
-                load.update({"password":
-                    md5(bytes(loading, 'utf-8')).hexdigest()})
+                load.update({"password": md5(bytes(loading,
+                                                   'utf-8')).hexdigest()})
             [setattr(deleted_user, key, str(value))
              for key, value in load.items()]
             deleted_user.save()
